@@ -12,7 +12,7 @@ git branch: 'development', credentialsId: '7946156c-b36e-49da-aff0-089ebce9c8b0'
 }
 
 try{
-slackNotification('STARTED')
+slackNotifications('STARTED')
 stage('Build'){
 sh "${mavenhome}/bin/mvn clean package"
 }
@@ -32,12 +32,12 @@ sshagent(['dec0b00b-d7c2-48e2-96e3-53f0a9a5d4d6']) {
 } 
 }//try closing
 catch (e){
-slackNotification(currentBuild.result)
+slackNotifications(currentBuild.result)
 throw e
 }//catch block closing
 
 finally{
-slackNotification(currentBuild.result)
+slackNotifications(currentBuild.result)
 }
 } //Node closing
 

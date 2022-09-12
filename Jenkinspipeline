@@ -1,13 +1,16 @@
 node{
-    def mavenhome = tool name: "maven3.8.6"
-    echo "Jenkins url is: ${env.JENKINS_URL}"
-    echo "Node name is : ${env.NODE_NAME}"
-    echo "Job name is : ${env.JOB_NAME}"
 
-    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
+def mavenhome = tool name: "maven3.8.6"
+
+echo "Jenkins url is: ${env.JENKINS_URL}"
+echo "Node name is : ${env.NODE_NAME}"
+echo "Job name is : ${env.JOB_NAME}"
+
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
 stage('CheckOutCode'){
 git branch: 'development', credentialsId: '7946156c-b36e-49da-aff0-089ebce9c8b0', url: 'https://github.com/supreeth0690/maven-web-application.git'
 }
+
 try{
 slackNotification('STARTED')
 stage('Build'){
@@ -41,7 +44,7 @@ slackNotification(currentBuild.result)
 //code snippet for sending slack notification
 //slack notification in groovy script
 
-def notifyBuild(String buildStatus = 'STARTED') {
+def slackNotifications(String buildStatus = 'STARTED') {
   // build status of null means successful
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 

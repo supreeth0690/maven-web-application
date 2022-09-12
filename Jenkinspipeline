@@ -8,7 +8,7 @@ node{
 stage('CheckOutCode'){
 git branch: 'development', credentialsId: '7946156c-b36e-49da-aff0-089ebce9c8b0', url: 'https://github.com/supreeth0690/maven-web-application.git'
 }
-
+try{
 stage('Build'){
 sh "${mavenhome}/bin/mvn clean package"
 }
@@ -26,5 +26,42 @@ sshagent(['dec0b00b-d7c2-48e2-96e3-53f0a9a5d4d6']) {
   sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.2.214:/opt/apache-tomcat-9.0.65/webapps/"
 }
 } */
+}//try closing
+catch (e){
+slackNotification(currentBuild.result)
+throw e
+}//catch block closing
 
+finally{
+slackNotification(currentBuild.result)
+}
 } //Node closing
+
+//code snippet for sending slack notification
+//slack notification in groovy script
+{
+def notifyBuild(String buildStatus = 'STARTED') {
+  // build status of null means successful
+  buildStatus =  buildStatus ?: 'SUCCESSFUL'
+
+  // Default values
+  def colorName = 'RED'
+  def colorCode = '#FF0000'
+  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+  def summary = "${subject} (${env.BUILD_URL})"
+
+  // Override default values based on build status
+  if (buildStatus == 'STARTED') {
+    colorName = 'YELLOW'
+    colorCode = '#FFFF00'
+  } else if (buildStatus == 'SUCCESSFUL') {
+    colorName = 'GREEN'
+    colorCode = '#00FF00'
+  } else {
+    colorName = 'RED'
+    colorCode = '#FF0000'
+  }
+
+  // Send notifications
+  slackSend (color: colorCode, message: summary)
+}

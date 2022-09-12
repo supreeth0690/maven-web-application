@@ -9,7 +9,7 @@ stage('CheckOutCode'){
 git branch: 'development', credentialsId: '7946156c-b36e-49da-aff0-089ebce9c8b0', url: 'https://github.com/supreeth0690/maven-web-application.git'
 }
 try{
-slackNotification('STAARTED')
+slackNotification('STARTED')
 stage('Build'){
 sh "${mavenhome}/bin/mvn clean package"
 }

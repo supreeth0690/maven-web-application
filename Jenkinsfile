@@ -18,7 +18,7 @@ node{
 	stage ('UploadArtifactRepo'){
 	sh "${mavenhome}/bin/mvn clean deploy"
 	}
-	stage 'DeployappintoTomcat'){
+	stage ('DeployappintoTomcat'){
 	sshagent(['9abd5029-ddfe-4870-969b-1bd9cb75372f']) {
    sh " scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.232.238.217:/opt/apache-tomcat-9.0.65/webapps/"
     }
@@ -26,7 +26,7 @@ node{
 	}//try block closing
 	catch (e) {
 	slacknotifications(currentBuild.result)
-		throw e
+	throw e
 	}
 	finally{
 		slacknotifications(currentBuild.result)

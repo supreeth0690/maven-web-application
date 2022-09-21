@@ -6,7 +6,7 @@ node{
 	echo "node name is:${env. NODE_NAME}"
 	echo "job name is:${env. JOB_NAME}"
 	try{
-Slacknotifications ('STARTED')
+notifyBuild('STARTED')
 	stage ('checkoutCode'){
 	git credentialsId: '72038918-1a19-46ac-a0a0-28af1157511a', url: 'https://github.com/Pavi-Ajagol/maven-web-application.git'
 	}
@@ -26,12 +26,16 @@ Slacknotifications ('STARTED')
     }
 	}//try block closing
 	catch (e) {
-	slacknotifications(currentBuild.result)
-	throw e
-	}
-	finally{
-		slacknotifications(currentBuild.result)
-	}
+    // If there was an exception thrown, the build failed
+    currentBuild.result = "FAILED"
+    throw e
+  } 
+finally {
+    // Success or failure, always send notifications
+    notifyBuild(currentBuild.result)
+  }
+}
+
 }//node closing
 
 // code snippet forsending slack notifications

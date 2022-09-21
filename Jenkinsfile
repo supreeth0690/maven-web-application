@@ -36,7 +36,7 @@ finally {
   }
 }
 
-}//node closing
+}
 
 // code snippet forsending slack notifications
 

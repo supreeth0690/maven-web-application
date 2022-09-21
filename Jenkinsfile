@@ -79,9 +79,6 @@ post{
  
 }
 
-
-}//Pipeline closing
-
 // code snippet for sending slack notifications
 
 def slacknotification(String buildStatus = 'STARTED') {
@@ -110,5 +107,6 @@ def slacknotification(String buildStatus = 'STARTED') {
   slackSend (color: colorCode, message: summary)
 }
 
+}//Pipeline closing
 
 

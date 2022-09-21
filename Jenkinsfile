@@ -107,6 +107,6 @@ def slacknotification(String buildStatus = 'STARTED') {
   slackSend (color: colorCode, message: summary)
 }
 
-}//Pipeline closing
+
 
 

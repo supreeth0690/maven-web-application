@@ -6,6 +6,7 @@ node{
 	echo "node name is:${env. NODE_NAME}"
 	echo "job name is:${env. JOB_NAME}"
 	try{
+	slacknotifications('STARTED')
 	stage ('checkoutCode'){
 	git credentialsId: '72038918-1a19-46ac-a0a0-28af1157511a', url: 'https://github.com/Pavi-Ajagol/maven-web-application.git'
 	}

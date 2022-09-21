@@ -36,7 +36,7 @@ finally {
   }
 }
 
-}
+
 
 // code snippet forsending slack notifications
 
